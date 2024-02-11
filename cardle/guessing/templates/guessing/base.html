@@ -1,0 +1,16 @@
+{% load static %}
+
+<html>
+    <head>
+
+        <script src="https://unpkg.com/htmx.org@1.2.1"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://unpkg.com/emojisplosion/lib/global.js"></script>
+        <link rel="stylesheet" href="{% static 'guessing/styles.css' %}">
+        <script src="{% static 'main.js' %}"></script>
+       </head>
+       <body>
+            {% block content %}
+            {% endblock %}
+        </body>
+</html>

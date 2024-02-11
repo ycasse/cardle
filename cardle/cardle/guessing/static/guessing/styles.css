@@ -1,0 +1,35 @@
+/* styles.css */
+* { background : wheat }
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 300px; /* Adjust width as needed */
+}
+
+#car-model-input {
+    flex-grow: 1; /* Allow the input to grow and take available space */
+}
+
+#search-button {
+    margin-left: 10px; /* Adjust margin as needed */
+    margin-right: 10px; /* Add margin to the right */
+}
+
+.suggestions-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    z-index: 1000;
+}
+
+.suggestion {
+    padding: 5px;
+    cursor: pointer;
+}

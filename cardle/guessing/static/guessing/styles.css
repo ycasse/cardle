@@ -1,0 +1,273 @@
+/* CSS code */
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1{
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+}
+
+body {
+    background-image: url("../backgrounds/background.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    
+}
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%; /* Adjust the max-width as needed */
+    text-align: center;
+}
+
+.search-container {
+    display: block;;
+    align-items: center;
+    position: relative;
+    text-align: center;
+}
+
+form
+{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#car-model-input {
+    flex-grow: 1;
+    width: 300px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+    background-color: #434343; /* Change the color as desired */
+    color: #ffffff; /* Change the text color as desired */
+    border: 3px solid  #1b66b7;
+}
+
+#search-button {
+    margin-left: 5px;
+    height: 40px;
+    background-color: #434343; /* Change the color as desired */
+    color: #ffffff;
+}
+
+.suggestions-panel {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 300;
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 15px;
+    background-color: #434343;
+    border: 1px solid #1b66b7;
+    color: #ffffff;
+    z-index: 1000;
+}
+
+.suggestion {
+    display: flex;
+    height: 30px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+
+}
+.suggestion:hover {
+    background-color: #8e8e8e;
+    cursor: pointer;
+}
+
+.square-info-green {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+    background-color: rgb(30, 191, 30);
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+}
+.square-info-green:hover {
+    background-color: rgb(142, 252, 142);
+    cursor:default;
+}
+
+.square-info-red {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+    background-color: rgb(255, 100, 100);
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+}
+.square-info-red:hover {
+    background-color: rgb(169, 6, 6);
+    cursor:default;
+}
+
+.square-info-orange {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+    background-color: rgb(247, 144, 59);
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+}
+.square-info-orange:hover {
+    background-color: rgb(253, 188, 134);
+    cursor:default;
+}
+
+.square-year-up {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+    background-color: rgb(255, 100, 100);
+    background-image: url("../backgrounds/darkup.png");
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+    cursor:default;
+}
+
+.square-year-up:hover {
+    background-color: rgb(169, 6, 6);
+    background-image: url("../backgrounds/lightup.png");
+    cursor:default;
+}
+
+.square-year-down {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+    background-color: rgb(255, 100, 100);
+    background-image: url("../backgrounds/darkdown.png");
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+    cursor:default;
+}
+
+.square-year-down:hover {
+    background-color: rgb(169, 6, 6);
+    background-image: url("../backgrounds/lightdown.png");
+    cursor:default;
+}
+
+.square-image {
+    display: block;
+    max-width:102px;
+    max-height: 85px;
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+    border: 1px solid white;
+    background-color: black;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.guessing-car {
+    display: flex;
+    width: 760px;
+    flex-direction: row;  /* Ensure the elements are arranged horizontally */
+}
+.all-infos {
+    display: flex;
+    width: 760px;
+    flex-direction: row;
+    cursor:default;
+}
+
+.car-name:hover{
+    display: contents;
+}
+
+.name-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 104px;
+    height: 40px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 16px;
+    border-bottom: 5px solid rgb(255, 255, 255);
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px #333; 
+}
+
+#win-message {
+    display: none;
+    background-color: #434343; /* Change the background color as needed */
+    padding: 10px; /* Adjust the padding as needed */
+    border: 2px solid #1b66b7; /* Change the border color as needed */
+    margin-top: 100px; /* Adjust the margin-top as needed */
+    max-width: 70%;
+    margin-bottom: 20%;
+}
+
+.win-car-image {
+    max-width: 60%; /* Ensure the image doesn't exceed the width of its container */
+    height: auto;
+    margin-top: 10px; /* Adjust the margin-top as needed */
+    border: 1px solid white;
+}
+
+#selected-car-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

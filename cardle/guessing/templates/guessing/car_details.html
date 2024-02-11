@@ -1,0 +1,15 @@
+<!-- car_details.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ car.model }} Details</title>
+</head>
+<body>
+    <h2>{{ car.model }} Details</h2>
+    <p>Brand: {{ car.brand }}</p>
+    <p>Fuel: {{ car.fuel }}</p>
+    <p>Car Type: {{ car.car_type }}</p>
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>

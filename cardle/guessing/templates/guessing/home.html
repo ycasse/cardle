@@ -1,0 +1,30 @@
+{% extends 'guessing/base.html' %}
+{% load static %}
+
+{% block content %}
+  
+  <div class="main-container">
+    <h1>Cardle</h1>
+    <div class="search-container">
+      <form id="car-search-form" method="get" action="{% url 'home' %}" autocomplete="off" target="response">
+        {% csrf_token %}
+        <input type="text" name="car_model" id="car-model-input" autocomplete="off" placeholder="Search for a car model">
+        <button type="submit">Guess</button>
+      </form>
+    <div class="suggestions-panel" id="pannel-suggestions"></div>
+    </div>
+    <div id="name-placement"></div>
+    <div id="selected-car-details" class="car-details"></div> 
+    <div id="win-message" style="display:none;">
+      <img id="win-car-image" src="" alt="Winning Car Image" class="win-car-image">
+      <p id="win-message-text"></p>
+    </div>
+    <div style="min-height: 25%; width: 100%;"></div>
+  </div>
+  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'main.js' %}"></script>
+<script type="module" src="{% static 'utils.js' %}"></script>
+
+
+{% endblock %}
