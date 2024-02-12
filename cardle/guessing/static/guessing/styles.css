@@ -1,4 +1,4 @@
-/* CSS code */
+
 .center-container {
     display: flex;
     flex-direction: column;
@@ -27,7 +27,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 100%; /* Adjust the max-width as needed */
+    max-width: 100%; 
     text-align: center;
 }
 
@@ -48,17 +48,17 @@ form
 
 #car-model-input {
     flex-grow: 1;
-    width: 300px; /* Adjust the width as needed */
-    height: 40px; /* Adjust the height as needed */
-    background-color: #434343; /* Change the color as desired */
-    color: #ffffff; /* Change the text color as desired */
+    width: 300px;
+    height: 40px;
+    background-color: #434343;
+    color: #ffffff; 
     border: 3px solid  #1b66b7;
 }
 
 #search-button {
     margin-left: 5px;
     height: 40px;
-    background-color: #434343; /* Change the color as desired */
+    background-color: #434343; 
     color: #ffffff;
 }
 
@@ -203,13 +203,16 @@ form
     cursor:default;
 }
 
-.square-image {
-    display: block;
-    max-width:102px;
+
+.model {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    max-width: 102px;
     max-height: 85px;
     height: auto;
     width: 100%;
-    object-fit: contain;
     border: 1px solid white;
     background-color: black;
     margin-left: 2px;
@@ -218,20 +221,46 @@ form
     margin-top: 5px;
 }
 
+.square-image {
+    display: block;
+    max-width: 100%; 
+    max-height: 100%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+}
+
+.model:hover .car-name {
+    visibility: visible;
+    opacity: 1;
+    cursor:default;
+}
+
+.car-name {
+    position: absolute; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(31, 49, 65, 0.72);
+    color: #fff;
+    visibility: hidden;
+    opacity: 0;
+}
+
+
 .guessing-car {
     display: flex;
     width: 760px;
-    flex-direction: row;  /* Ensure the elements are arranged horizontally */
+    flex-direction: row;  
 }
 .all-infos {
     display: flex;
     width: 760px;
     flex-direction: row;
     cursor:default;
-}
-
-.car-name:hover{
-    display: contents;
 }
 
 .name-column {
@@ -251,18 +280,18 @@ form
 
 #win-message {
     display: none;
-    background-color: #434343; /* Change the background color as needed */
-    padding: 10px; /* Adjust the padding as needed */
-    border: 2px solid #1b66b7; /* Change the border color as needed */
-    margin-top: 100px; /* Adjust the margin-top as needed */
+    background-color: #434343; 
+    padding: 10px; 
+    border: 2px solid #1b66b7; 
+    margin-top: 100px; 
     max-width: 70%;
     margin-bottom: 20%;
 }
 
 .win-car-image {
-    max-width: 60%; /* Ensure the image doesn't exceed the width of its container */
+    max-width: 60%; 
     height: auto;
-    margin-top: 10px; /* Adjust the margin-top as needed */
+    margin-top: 10px; 
     border: 1px solid white;
 }
 

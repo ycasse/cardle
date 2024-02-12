@@ -38,7 +38,7 @@ class Car(models.Model):
     car_type = models.ManyToManyField(Car_type)
     engine_conf = models.ManyToManyField(Engine_conf)
     drive_wheel = models.ManyToManyField(Drive_wheel)
-    year = models.fields.IntegerField(validators=[MinValueValidator(1900), MaxValueValidator(2023)])
+    year = models.fields.IntegerField(validators=[MinValueValidator(1900), MaxValueValidator(2024)])
     picture = models.ImageField(upload_to='car_pics', blank=True, null=True)
     
     def __str__(self):

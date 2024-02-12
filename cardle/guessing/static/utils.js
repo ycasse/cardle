@@ -16,7 +16,6 @@ var searchedcaryear;
 var selectcarpicture;
 
 $(document).ready(function() {
-    // Make an AJAX request to get a random car
     $.ajax({
         url: '/get_random_car/',
         method: 'GET',
@@ -67,7 +66,7 @@ var nb_guess = 0;
                     var container = $('<div class="guessing-car"></div>');
                     var text = '';
                     if (data.car_details.Picture) {
-                        text += '<img src="' + data.car_details.Picture + '" alt="Car Image" class="square-image"><div class="car-name" style="display:none;">' + data.car_details.Model+'</div>';
+                        text += '<div class="model"><img src="' + data.car_details.Picture + '" alt="Car Image" class="square-image"><div class="car-name">' + data.car_details.Model+'</div></div>';
                     } else {
                         text += '<img src="/media/car_pics/no_image.jpg" alt="Default Car Image"  class="square-image">';
                     }
@@ -124,13 +123,10 @@ function compareCarAttribute(selectedAttribute, searchedAttribute, attributeName
         selectedOptions.every(option => searchedOptions.includes(option)) &&
         searchedOptions.every(option => selectedOptions.includes(option))
     ) {
-        // All selected options are present in the searched car's options
         result = `<div class="square-info-green ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
     } else if (selectedOptions.some(option => searchedOptions.includes(option))) {
-        // Partial match, some selected options are present in the searched car's options
         result = `<div class="square-info-orange ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
     } else {
-        // No match
         result = `<div class="square-info-red ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
     }
 
@@ -139,7 +135,6 @@ function compareCarAttribute(selectedAttribute, searchedAttribute, attributeName
 
 
 function winmessage(nb_guess) {
-    // Display the winning message with the guessed car image
     var winMessageDiv = $('#win-message');
     var winCarImage = $('#win-car-image');
     var winMessageText = $('#win-message-text');
@@ -152,7 +147,6 @@ function winmessage(nb_guess) {
 
     winMessageText.text('Congratulations! You guessed the car in ' + nb_guess + ' attempts.');
 
-    // Delay the appearance of the win message and image
     setTimeout(function() {
         winMessageDiv.width($('#selected-car-details').width());
 
@@ -160,5 +154,5 @@ function winmessage(nb_guess) {
         $('#car-search-form').hide();
         $('#pannel-suggestions').hide();
 
-    }, 4400); // Adjust the delay time as needed
+    }, 4400);
 }

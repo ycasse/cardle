@@ -36,9 +36,11 @@ def get_random_car(request):
 def car_suggestions(request):
     search_term = request.GET.get('search_term', '')
 
-    startswith_suggestions = Car.objects.filter(model__istartswith=search_term).values_list('model', flat=True)
+    sent_models = request.session.get('sent_models', [])
 
-    contains_suggestions = Car.objects.filter(Q(model__icontains=' ' + search_term) | Q(model__istartswith=search_term)).values_list('model', flat=True)
+    startswith_suggestions = Car.objects.filter(model__istartswith=search_term).exclude(model__in=sent_models).values_list('model', flat=True)
+
+    contains_suggestions = Car.objects.filter(Q(model__icontains=' ' + search_term) | Q(model__istartswith=search_term)).exclude(model__in=sent_models).values_list('model', flat=True)
 
     suggestions = sorted(set(startswith_suggestions) | set(contains_suggestions))
 

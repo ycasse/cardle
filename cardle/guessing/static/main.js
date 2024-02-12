@@ -1,9 +1,12 @@
 $(function() {
     $("#car-model-input").on('input', function() {
         let inputText = $(this).val();
-        // Perform AJAX request to get suggestions based on inputText
+        if (inputText.trim() === '') {
+            $(".suggestions-panel").hide();
+            return;
+        }
         $.ajax({
-            url: '/car-suggestions/',  // URL to fetch suggestions (adjust this to your Django view)
+            url: '/car-suggestions/',
             method: 'GET',
             data: { 'search_term': inputText },
             success: function(data) {
@@ -21,7 +24,12 @@ $(function() {
             }
         });
     });
-/*  */
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('#car-model-input, .suggestions-panel').length) {
+            $(".suggestions-panel").hide();
+        }
+    });
     $(document).on('click', '.suggestion', function() {
         let selectedSuggestion = $(this).text();
         $("#car-model-input").val(selectedSuggestion);
