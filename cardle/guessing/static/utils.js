@@ -1,3 +1,73 @@
+// globals.js
+var suggestionClicked = false;
+
+$(function() {
+    $("#car-model-input").on('input', function() {
+        let inputText = $(this).val();
+        if (inputText.trim() === '') {
+            $(".suggestions-panel").hide();
+            return;
+        }
+        $.ajax({
+            url: '/car-suggestions/',
+            method: 'GET',
+            data: { 'search_term': inputText },
+            success: function(data) {
+                let suggestions = data.suggestions;
+                let suggestionsPanel = $(".suggestions-panel");
+                suggestionsPanel.empty();
+                if (suggestions.length > 0) {
+                    suggestionsPanel.show();
+                    for (let i = 0; i < suggestions.length; i++) {
+                        suggestionsPanel.append('<div class="suggestion">' + suggestions[i] + '</div>');
+                    }
+                } else {
+                    suggestionsPanel.hide();
+                }
+            }
+        });
+    });
+
+    $("#car-model-input").on('focus', function() {
+        let inputText = $(this).val().trim();
+
+        if (inputText !== '') {
+            $.ajax({
+                url: '/car-suggestions/',
+                method: 'GET',
+                data: { 'search_term': inputText },
+                success: function(data) {
+                    let suggestions = data.suggestions;
+                    let suggestionsPanel = $(".suggestions-panel");
+                    suggestionsPanel.empty();
+                    if (suggestions.length > 0) {
+                        suggestionsPanel.show();
+                        for (let i = 0; i < suggestions.length; i++) {
+                            suggestionsPanel.append('<div class="suggestion">' + suggestions[i] + '</div>');
+                        }
+                    } else {
+                        suggestionsPanel.hide();
+                    }
+                }
+            });
+        }
+    });
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('#car-model-input, .suggestions-panel').length) {
+            $(".suggestions-panel").hide();
+        }
+    });
+
+    $(document).on('click', '.suggestion', function() {
+        suggestionClicked = true;
+        let selectedSuggestion = $(this).text();
+        $("#car-model-input").val(selectedSuggestion);
+        $(".suggestions-panel").empty();
+        $('#car-search-form').submit();
+    });
+});
+
 // main.js
 var selectcarmodel;
 var searchedcarmodel;
@@ -34,11 +104,19 @@ $(document).ready(function() {
             console.error(error);
         }
     });
-var nb_guess = 0;
+
+    var nb_guess = 0;
     $('#car-search-form').on('submit', function(event) {
         event.preventDefault();
         var carModel = $('#car-model-input').val();
-        
+
+        var firstSuggestion = $('.suggestions-panel .suggestion:first').text();
+        if (firstSuggestion && !suggestionClicked) {
+            carModel = firstSuggestion;
+        } else {
+            suggestionClicked = false;
+        }
+
         $.ajax({
             url: '/get_car_details/',
             method: 'GET',
@@ -77,13 +155,11 @@ var nb_guess = 0;
                     text += compareCarAttribute(selectcarengine, searchedcarengine, 'EngineConf');
                     text += compareCarAttribute(selectcarwheel, searchedcarwheel, 'DriveWheel');
                     
-                    
-                    
                     if (selectcaryear === searchedcaryear){
                         text += '<div class="square-info-green Year" data-car-detail="Year">' + data.car_details.Year + '</div></div>';
                     } else if (selectcaryear > searchedcaryear){
                         text += '<div class="square-year-up Year" data-car-detail="Year">' + data.car_details.Year + '</div></div>';
-                    }else {
+                    } else {
                         text += '<div class="square-year-down Year" data-car-detail="Year">' + data.car_details.Year + '</div></div>';
                     }
 
@@ -105,6 +181,7 @@ var nb_guess = 0;
                         winmessage(nb_guess);
                     }
                     $('#car-model-input').val('');
+                    $(".suggestions-panel").hide();
                 }
             },
             error: function(xhr, status, error) {
@@ -133,7 +210,6 @@ function compareCarAttribute(selectedAttribute, searchedAttribute, attributeName
     return result;
 }
 
-
 function winmessage(nb_guess) {
     var winMessageDiv = $('#win-message');
     var winCarImage = $('#win-car-image');
@@ -153,6 +229,9 @@ function winmessage(nb_guess) {
         winMessageDiv.show();
         $('#car-search-form').hide();
         $('#pannel-suggestions').hide();
-
+        document.getElementById('win-car-image').scrollIntoView({
+            behavior : 'smooth',
+        });
+        
     }, 4400);
 }

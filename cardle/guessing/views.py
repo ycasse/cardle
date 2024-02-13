@@ -15,7 +15,7 @@ import re
 def get_random_car(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'GET':
         seed = timezone.now().date().day
-        random.seed(seed *2)
+        random.seed(seed)
 
         random_car = random.choice(Car.objects.all())
 
