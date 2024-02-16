@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from datetime import timedelta
 import random
 import base64
 import re
@@ -14,21 +15,32 @@ import re
 @csrf_exempt
 def get_random_car(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'GET':
-        seed = timezone.now().date().day
-        random.seed(seed)
+        # Get today's random seed
+        seed_today = timezone.now().date().day
 
-        random_car = random.choice(Car.objects.all())
+        # Retrieve the car selected yesterday (using the seed from yesterday)
+        yesterday = timezone.now() - timedelta(days=1)
+        seed_yesterday = yesterday.day
+        random.seed(seed_yesterday)
+        car_selected_yesterday = random.choice(Car.objects.all())
+        yesterday_car_model = car_selected_yesterday.model
+
+        # Set the seed back to today's seed for the current random selection
+        random.seed(seed_today)
+        random_car_today = random.choice(Car.objects.all())
 
         car_details = {
-            'Model': random_car.model,
-            'Brand': ', '.join(brand.name for brand in random_car.brand.all()),
-            'Fuel': ', '.join(fuel.name for fuel in random_car.fuel.all()),
-            'Car Type': ', '.join(car_type.name for car_type in random_car.car_type.all()),
-            'Engine conf': ', '.join(engine_conf.name for engine_conf in random_car.engine_conf.all()),
-            'Drive wheel': ', '.join(drive_wheel.name for drive_wheel in random_car.drive_wheel.all()),
-            'Year': random_car.year,
-            'Picture': get_base64_image(random_car.picture) if random_car.picture else None,
+            'Model': random_car_today.model,
+            'Brand': ', '.join(brand.name for brand in random_car_today.brand.all()),
+            'Fuel': ', '.join(fuel.name for fuel in random_car_today.fuel.all()),
+            'Car Type': ', '.join(car_type.name for car_type in random_car_today.car_type.all()),
+            'Engine conf': ', '.join(engine_conf.name for engine_conf in random_car_today.engine_conf.all()),
+            'Drive wheel': ', '.join(drive_wheel.name for drive_wheel in random_car_today.drive_wheel.all()),
+            'Year': random_car_today.year,
+            'Picture': get_base64_image(random_car_today.picture) if random_car_today.picture else None,
+            'Yesterday Car Model': yesterday_car_model,
         }
+
         return JsonResponse({'car_details': car_details})
     else:
         return JsonResponse({'error': 'Invalid request'}, status=400)

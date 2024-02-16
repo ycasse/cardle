@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Brand(models.Model):
     name = models.CharField(max_length=100)
+    country = models.CharField(max_length=5, default='🏁')
 
     def __str__(self):
         return self.name

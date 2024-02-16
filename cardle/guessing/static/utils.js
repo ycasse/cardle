@@ -2,6 +2,9 @@
 var suggestionClicked = false;
 
 $(function() {
+    $("#car-model-input").on('click', function() {
+        $(".suggestions-panel").scrollTop(0); 
+    });
     $("#car-model-input").on('input', function() {
         let inputText = $(this).val();
         if (inputText.trim() === '') {
@@ -52,7 +55,38 @@ $(function() {
             });
         }
     });
-
+    $("#car-model-input").on('keydown', function(e) {
+        var suggestionsPanel = $(".suggestions-panel");
+        var suggestionItems = suggestionsPanel.find('.suggestion');
+        var selectedSuggestion = suggestionsPanel.find('.selected');
+    
+        if (e.key === 'ArrowDown' && suggestionItems.length > 0) {
+            e.preventDefault();
+    
+            if (selectedSuggestion.length === 0 || selectedSuggestion.index() === suggestionItems.length - 1) {
+                suggestionItems.removeClass('selected');
+                suggestionItems.first().addClass('selected');
+            } else {
+                selectedSuggestion.removeClass('selected').next().addClass('selected');
+            }
+        } else if (e.key === 'ArrowUp' && suggestionItems.length > 0) {
+            e.preventDefault();
+    
+            if (selectedSuggestion.length === 0 || selectedSuggestion.index() === 0) {
+                suggestionItems.removeClass('selected');
+                suggestionItems.last().addClass('selected');
+            } else {
+                selectedSuggestion.removeClass('selected').prev().addClass('selected');
+            }
+        } else if (e.key === 'Enter' && selectedSuggestion.length > 0) {
+            e.preventDefault();
+            var suggestionText = selectedSuggestion.text();
+            $("#car-model-input").val(suggestionText);
+            $(".suggestions-panel").empty();
+            suggestionClicked = true;
+            $('#car-search-form').submit();
+        }
+    });
     $(document).on('click', function(event) {
         if (!$(event.target).closest('#car-model-input, .suggestions-panel').length) {
             $(".suggestions-panel").hide();
@@ -68,7 +102,6 @@ $(function() {
     });
 });
 
-// main.js
 var selectcarmodel;
 var searchedcarmodel;
 var selectcarbrand;
@@ -99,6 +132,14 @@ $(document).ready(function() {
             selectcarwheel= data.car_details['Drive wheel'];
             selectcaryear = data.car_details.Year;
             selectcarpicture =  data.car_details.Picture;
+            var yesterdaycar = data.car_details['Yesterday Car Model'];
+            var yesterdayCarElement = $("#yesterday-car");
+            if (yesterdayCarElement.length) {
+                yesterdayCarElement.append('<p>Yesterday\'s car was : <span style="color: #00bfff;">' + yesterdaycar + '</span></p>');
+                console.log("Content appended successfully.");
+            } else {
+                console.error("Element with class 'yesterday-car' not found.");
+            }
         },
         error: function(xhr, status, error) {
             console.error(error);
@@ -214,14 +255,18 @@ function winmessage(nb_guess) {
     var winMessageDiv = $('#win-message');
     var winCarImage = $('#win-car-image');
     var winMessageText = $('#win-message-text');
+    var winMessageGuess = $('#win-message-nbguess');
 
     if (selectcarpicture) {
         winCarImage.attr('src', selectcarpicture);
     } else {
         winCarImage.attr('src', '/media/car_pics/no_image.jpg');
     }
-
-    winMessageText.text('Congratulations! You guessed the car in ' + nb_guess + ' attempts.');
+    winMessageText.css('color', 'white'); 
+    winMessageText.html('You guessed : <span style="color: #00bfff;">' + selectcarmodel + '</span>'); 
+    winMessageGuess.css('color', 'white');
+    winMessageGuess.html('Number of guesses : <span style="color: #00bfff;">' + nb_guess + '</span>'); 
+    winCarImage.addClass('pulse-animation');
 
     setTimeout(function() {
         winMessageDiv.width($('#selected-car-details').width());
@@ -230,8 +275,36 @@ function winmessage(nb_guess) {
         $('#car-search-form').hide();
         $('#pannel-suggestions').hide();
         document.getElementById('win-car-image').scrollIntoView({
-            behavior : 'smooth',
+            behavior: 'smooth',
         });
-        
+        setTimeout(function() {
+            winCarImage.removeClass('pulse-animation');
+        }, 2000);
+
     }, 4400);
 }
+document.addEventListener("DOMContentLoaded", function () {
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 1);
+    targetDate.setHours(0, 0, 0, 0);
+
+    const countdownElement = document.getElementById("countdown");
+    setInterval(updateCountdown, 1000);
+
+    function updateCountdown() {
+        const currentDate = new Date();
+        const timeDifference = targetDate - currentDate;
+
+        if (timeDifference > 0) {
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            countdownElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
+        } else {
+            countdownElement.textContent = "It's a new day!";
+        }
+    }
+
+    updateCountdown();
+});
