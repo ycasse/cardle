@@ -151,9 +151,8 @@ $(document).ready(function() {
     $('#car-search-form').on('submit', function(event) {
         event.preventDefault();
         var carModel = $('#car-model-input').val();
-
         var firstSuggestion = $('.suggestions-panel .suggestion:first').text();
-        if (firstSuggestion && !suggestionClicked) {
+        if (firstSuggestion && !suggestionClicked && $('#car-model-input').val() !== '') {
             carModel = firstSuggestion;
         } else {
             suggestionClicked = false;
