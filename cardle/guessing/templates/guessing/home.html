@@ -15,7 +15,7 @@
       <form id="car-search-form" method="get" action="{% url 'home' %}" autocomplete="off" target="response">
         {% csrf_token %}
         <input type="text" name="car_model" id="car-model-input" autocomplete="off" placeholder="Search for a car model">
-        <button type="submit">Guess</button>
+        <button class="guess" type="submit">Guess</button>
       </form>
     <div class="suggestions-panel" id="pannel-suggestions"></div>
     </div>
@@ -38,6 +38,5 @@
   
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="module" src="{% static 'utils.js' %}"></script>
-
 
 {% endblock %}

@@ -21,20 +21,18 @@ body {
     display: flex;
     justify-content: center;
     margin-top: 50px;
-    
 }
+
+.search-container {
+    display: block;;
+    position: relative;
+}
+
 .main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: 100%; 
-    text-align: center;
-}
-
-.search-container {
-    display: block;;
-    align-items: center;
-    position: relative;
     text-align: center;
 }
 
@@ -44,23 +42,43 @@ form
     margin-left: auto;
     margin-right: auto;
     text-align: left;
+    box-shadow: 0 0 20px 5px rgba(221, 17, 218,0.7);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 #car-model-input {
     flex-grow: 1;
     width: 300px;
-    height: 40px;
-    background-image: linear-gradient(to bottom right, rgb(2, 3, 41), rgb(71 44 105));
+    height: 50px;
+    background-image: linear-gradient(to right, rgb(2, 3, 41), rgb(71 44 105));
     color: #ffffff; 
-    border: 1px solid  #00bfff;
-    box-shadow: 0 0 20px 5px rgba(221, 17, 218,0.7);
+    border: 1px solid  rgb(0, 191, 255);
+    border-right: none;
+    outline: none; 
+    font-size: 1.3em;
+    padding-left: 10px;
+    margin-right: -3px; 
 }
 
-#search-button {
-    margin-left: 5px;
-    height: 40px;
-    background-color: #434343; 
-    color: #ffffff;
+.guess {
+    height: 50px;
+    width: 100px;
+    color: rgb(221, 168, 234);;
+    background: linear-gradient(to left, rgb(239, 97, 239),  rgb(71 44 105))var(--p, 100%) / var(--p,0%) no-repeat, rgb(71 44 105);
+    transition: .5s, background-position 0s;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border: 1px solid  #00bfff;
+    border-left: none;
+    font-size: 1.3em;
+    margin-left: -3px;
+}
+
+.guess:hover{
+    color: rgb(164, 238, 238);
+    --p: 100%;
+    cursor:pointer;
 }
 
 .suggestions-panel {
@@ -68,7 +86,7 @@ form
     position: absolute;
     top: 50%;
     left: 0;
-    width: 300;
+    width: 340px;
     max-height: 150px;
     overflow-y: auto;
     margin-top: 15px;
@@ -293,7 +311,7 @@ form
     padding: 10px;
     border: 2px solid #00bfff;
     margin-top: 10;
-    width: 360px;
+    width: 400px;
     min-height : 167px;
     margin-bottom: 10%;
     border-radius: 10px;

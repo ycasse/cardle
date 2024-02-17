@@ -16,6 +16,7 @@ $(function() {
             method: 'GET',
             data: { 'search_term': inputText },
             success: function(data) {
+                $(".suggestions-panel").scrollTop(0); 
                 let suggestions = data.suggestions;
                 let suggestionsPanel = $(".suggestions-panel");
                 suggestionsPanel.empty();
@@ -223,6 +224,7 @@ $(document).ready(function() {
                     }
                     $('#car-model-input').val('');
                     $(".suggestions-panel").hide();
+                    suggestionClicked = false;
                 }
             },
             error: function(xhr, status, error) {
@@ -300,7 +302,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-            countdownElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
+            const formattedHours = hours < 10 ? `0${hours}` : hours;
+            const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+            const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+        
+            countdownElement.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+        
         } else {
             countdownElement.textContent = "It's a new day!";
         }
