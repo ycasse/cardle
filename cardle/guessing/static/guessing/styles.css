@@ -330,6 +330,10 @@ form
     border-radius: 10px;
     box-shadow: 0 0 20px 10px rgba(221, 17, 218,0.7);
 }
+#win-message:hover{
+    background-image: linear-gradient(to bottom right, rgb(5 8 137), rgb(166 65 200));
+}
+
 
 .win-car-image {
     max-width: 60%; 
@@ -377,7 +381,7 @@ form
     font-size: 1.2em;
   }
 
-  ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 3px; /* Width of the scrollbar */
 }
 

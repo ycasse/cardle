@@ -19,6 +19,7 @@ from django.urls import path
 from guessing import views
 from guessing.views import car_suggestions
 from guessing.views import get_random_car
+from guessing.views import get_guessed_cars
 from django.conf import settings 
 from django.urls import path, include 
 from django.conf.urls.static import static 
@@ -29,6 +30,7 @@ urlpatterns = [
     path('car-suggestions/', car_suggestions, name='car-suggestions'),
     path('get_car_details/', views.get_car_details, name='get_car_details'),
     path('get_random_car/', get_random_car, name='get_random_car'),
+    path('get_guessed_cars/', get_guessed_cars, name='get_guessed_cars'),
     
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

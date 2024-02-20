@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from datetime import timedelta
+from datetime import datetime
 import random
 import base64
 import re
@@ -15,17 +16,13 @@ import re
 @csrf_exempt
 def get_random_car(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'GET':
-        # Get today's random seed
         seed_today = timezone.now().date().day
-
-        # Retrieve the car selected yesterday (using the seed from yesterday)
         yesterday = timezone.now() - timedelta(days=1)
         seed_yesterday = yesterday.day
         random.seed(seed_yesterday)
         car_selected_yesterday = random.choice(Car.objects.all())
         yesterday_car_model = car_selected_yesterday.model
 
-        # Set the seed back to today's seed for the current random selection
         random.seed(seed_today)
         random_car_today = random.choice(Car.objects.all())
 
@@ -48,11 +45,11 @@ def get_random_car(request):
 def car_suggestions(request):
     search_term = request.GET.get('search_term', '')
 
-    sent_models = request.session.get('sent_models', [])
+    guessed_today = request.session.get('guessed_today', [])
 
-    startswith_suggestions = Car.objects.filter(model__istartswith=search_term).exclude(model__in=sent_models).values_list('model', flat=True)
+    startswith_suggestions = Car.objects.filter(model__istartswith=search_term).exclude(model__in=guessed_today).values_list('model', flat=True)
 
-    contains_suggestions = Car.objects.filter(Q(model__icontains=' ' + search_term) | Q(model__istartswith=search_term)).exclude(model__in=sent_models).values_list('model', flat=True)
+    contains_suggestions = Car.objects.filter(Q(model__icontains=' ' + search_term) | Q(model__istartswith=search_term)).exclude(model__in=guessed_today).values_list('model', flat=True)
 
     suggestions = sorted(set(startswith_suggestions) | set(contains_suggestions))
 
@@ -66,6 +63,13 @@ def car_suggestions(request):
 def home(request):
     form = CarSearchForm(request.GET or None)
 
+    current_date = datetime.now().date()
+    stored_date_str = request.session.get('guessed_today_date', None)
+
+    if stored_date_str and stored_date_str != str(current_date):
+        request.session['guessed_today'] = []
+        request.session['guessed_today_date'] = str(current_date)
+
     return render(request, 'guessing/home.html', {'form': form})
 
     
@@ -74,6 +78,13 @@ def get_car_details(request):
     if car_model:
         try:
             car = Car.objects.get(model__iexact=car_model)
+            guessed_today = request.session.get('guessed_today', [])
+            if car_model in guessed_today:
+                return JsonResponse({'error': 'Car already guessed today'}, status=400)
+
+            guessed_today.append(car_model)
+            request.session['guessed_today'] = guessed_today
+
             car_details = {
                 'Model': car.model,
                 'Brand': ', '.join(brand.name for brand in car.brand.all()),
@@ -89,7 +100,40 @@ def get_car_details(request):
             pass
     return JsonResponse({'car_details': 'No details found'})
 
+def get_car_details_by_model(car_model):
+    try:
+        car = Car.objects.get(model__iexact=car_model)
+        guessed_today = []  # Modify this line to retrieve the guessed_today list from wherever it is stored
+        if car_model in guessed_today:
+            return {'error': 'Car already guessed today'}
+
+        guessed_today.append(car_model)
+        # Modify this line to update the guessed_today list wherever it is stored
+        car_details = {
+            'Model': car.model,
+            'Brand': ', '.join(brand.name for brand in car.brand.all()),
+            'Fuel': ', '.join(fuel.name for fuel in car.fuel.all()),
+            'Car Type': ', '.join(car_type.name for car_type in car.car_type.all()),
+            'Engine conf': ', '.join(engine_conf.name for engine_conf in car.engine_conf.all()),
+            'Drive wheel': ', '.join(drive_wheel.name for drive_wheel in car.drive_wheel.all()),
+            'Year': car.year,
+            'Picture': get_base64_image(car.picture) if car.picture else None,
+        }
+        return {'car_details': car_details}
+    except Car.DoesNotExist:
+        return {'car_details': 'No details found'}
+
 def get_base64_image(image_field):
     with open(image_field.path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
     return f"data:image/png;base64,{encoded_string}"
+    
+def get_guessed_cars(request):
+    guessed_cars = request.session.get('guessed_today', [])
+    guessed_cars_details = []
+
+    for car_model in guessed_cars:
+        car_details = get_car_details_by_model(car_model)
+        guessed_cars_details.append(car_details.get('car_details', {}))
+
+    return JsonResponse({'guessed_cars_details': guessed_cars_details})

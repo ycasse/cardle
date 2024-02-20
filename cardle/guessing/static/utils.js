@@ -118,8 +118,94 @@ var searchedcarwheel;
 var selectcaryear;
 var searchedcaryear;
 var selectcarpicture;
+var nb_guess = 0;
 
 $(document).ready(function() {
+    
+    function updateGuessedCarsOnLoad(guessedCars) {
+        for (var i = 0; i < guessedCars.length; i++) {
+            var carDetails = guessedCars[i];
+            searchedcarmodel = carDetails.Model;
+            searchedcarbrand = carDetails.Brand;
+            searchedcarfuel = carDetails.Fuel;
+            searchedcartype = carDetails['Car Type'];
+            searchedcarengine =  carDetails['Engine conf'];
+            searchedcarwheel = carDetails['Drive wheel'] ;
+            searchedcaryear = carDetails.Year;
+            if (typeof searchedcarmodel !== 'undefined'){ 
+                if (nb_guess === 0){
+                    $('#name-placement').prepend('<div class="all-infos">' +
+                    '<div class="name-column">Model</div>' +
+                    '<div class="name-column">Brand</div>' +
+                    '<div class="name-column">Fuel</div>' +
+                    '<div class="name-column">Car type</div>' +
+                    '<div class="name-column">Engine conf.</div>' +
+                    '<div class="name-column">Drive wheel</div>' +
+                    '<div class="name-column">Release Year</div>' +
+                    '</div>');
+                }
+                var container = $('<div class="guessing-car"></div>');
+                var text = '';
+                if (carDetails.Picture) {
+                    text += '<div class="model"><img src="' + carDetails.Picture + '" alt="Car Image" class="square-image"><div class="car-name">' + carDetails.Model+'</div></div>';
+                } else {
+                    text += '<img src="/media/car_pics/no_image.jpg" alt="Default Car Image"  class="square-image">';
+                }
+
+                text += compareCarAttribute(selectcarbrand, searchedcarbrand, 'Brand');
+                text += compareCarAttribute(selectcarfuel, searchedcarfuel, 'Fuel');
+                text += compareCarAttribute(selectcartype, searchedcartype, 'CarType');
+                text += compareCarAttribute(selectcarengine, searchedcarengine, 'EngineConf');
+                text += compareCarAttribute(selectcarwheel, searchedcarwheel, 'DriveWheel');
+                
+                if (selectcaryear === searchedcaryear){
+                    text += '<div class="square-info-green Year" data-car-detail="Year">' + carDetails.Year + '</div></div>';
+                } else if (selectcaryear > searchedcaryear){
+                    text += '<div class="square-year-up Year" data-car-detail="Year">' + carDetails.Year + '</div></div>';
+                } else {
+                    text += '<div class="square-year-down Year" data-car-detail="Year">' + carDetails.Year + '</div></div>';
+                }
+                container.prepend(text);
+
+                $('#selected-car-details').prepend(container);
+                nb_guess++;
+                if (searchedcarmodel === selectcarmodel){
+                    var winMessageDiv = $('#win-message');
+                    var winCarImage = $('#win-car-image');
+                    var winMessageText = $('#win-message-text');
+                    var winMessageGuess = $('#win-message-nbguess');
+                
+                    if (selectcarpicture) {
+                        winCarImage.attr('src', selectcarpicture);
+                    } else {
+                        winCarImage.attr('src', '/media/car_pics/no_image.jpg');
+                    }
+                    winMessageText.css('color', 'white'); 
+                    winMessageText.html('You guessed : <span style="color: #00bfff;">' + selectcarmodel + '</span>'); 
+                    winMessageGuess.css('color', 'white');
+                    winMessageGuess.html('Number of guesses : <span style="color: #00bfff;">' + nb_guess + '</span>'); 
+                    winCarImage.addClass('pulse-animation');                
+                    winMessageDiv.width($('#selected-car-details').width());
+            
+                    winMessageDiv.show();
+                    $('#car-search-form').hide();
+                    $('#pannel-suggestions').hide();
+                    document.getElementById('win-car-image').scrollIntoView({
+                        behavior: 'smooth',
+                    });
+                    setTimeout(function() {
+                        winCarImage.removeClass('pulse-animation');
+                    }, 2000);
+                
+                    
+                }
+                $('#car-model-input').val('');
+                $(".suggestions-panel").hide();
+                suggestionClicked = false;
+            }
+        }
+    }
+    
     $.ajax({
         url: '/get_random_car/',
         method: 'GET',
@@ -137,17 +223,31 @@ $(document).ready(function() {
             var yesterdayCarElement = $("#yesterday-car");
             if (yesterdayCarElement.length) {
                 yesterdayCarElement.append('<p>Yesterday\'s car was : <span style="color: #00bfff;">' + yesterdaycar + '</span></p>');
-                console.log("Content appended successfully.");
             } else {
                 console.error("Element with class 'yesterday-car' not found.");
             }
+            callSecondAjax();
         },
         error: function(xhr, status, error) {
             console.error(error);
         }
     });
+    function callSecondAjax() {
+        $.ajax({
+            url: '/get_guessed_cars/',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                const guessedCars = data.guessed_cars_details;
+                updateGuessedCarsOnLoad(guessedCars);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
 
-    var nb_guess = 0;
+    
     $('#car-search-form').on('submit', function(event) {
         event.preventDefault();
         var carModel = $('#car-model-input').val();
@@ -227,6 +327,9 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) {
+                $('#car-model-input').val('');
+                $(".suggestions-panel").hide();
+                suggestionClicked = false;
                 console.error(error);
             }
         });
@@ -234,23 +337,29 @@ $(document).ready(function() {
 });
 
 function compareCarAttribute(selectedAttribute, searchedAttribute, attributeName) {
-    var selectedOptions = selectedAttribute.split(',').map(option => option.trim());
-    var searchedOptions = searchedAttribute.split(',').map(option => option.trim());
-    var result;
+    console.log(selectedAttribute, searchedAttribute);
+    if (selectedAttribute && searchedAttribute) {
+        var selectedOptions = selectedAttribute.split(',').map(option => option.trim());
+        var searchedOptions = searchedAttribute.split(',').map(option => option.trim());
+        var result;
 
-    if (
-        selectedOptions.every(option => searchedOptions.includes(option)) &&
-        searchedOptions.every(option => selectedOptions.includes(option))
-    ) {
-        result = `<div class="square-info-green ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
-    } else if (selectedOptions.some(option => searchedOptions.includes(option))) {
-        result = `<div class="square-info-orange ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
+        if (
+            selectedOptions.every(option => searchedOptions.includes(option)) &&
+            searchedOptions.every(option => selectedOptions.includes(option))
+        ) {
+            result = `<div class="square-info-green ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
+        } else if (selectedOptions.some(option => searchedOptions.includes(option))) {
+            result = `<div class="square-info-orange ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
+        } else {
+            result = `<div class="square-info-red ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
+        }
+
+        return result;
     } else {
-        result = `<div class="square-info-red ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
+        return `<div class="square-info-red ${attributeName}" data-car-detail="${attributeName}">N/A</div>`;
     }
-
-    return result;
 }
+
 
 function winmessage(nb_guess) {
     var winMessageDiv = $('#win-message');
@@ -314,3 +423,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateCountdown();
 });
+
