@@ -64,11 +64,11 @@ def home(request):
     form = CarSearchForm(request.GET or None)
 
     current_date = datetime.now().date()
-    stored_date_str = request.session.get('guessed_today_date', None)
+    stored_date_str = request.session.get('today_date', None)
 
     if stored_date_str and stored_date_str != str(current_date):
         request.session['guessed_today'] = []
-        request.session['guessed_today_date'] = str(current_date)
+    request.session['today_date'] = str(current_date)
 
     return render(request, 'guessing/home.html', {'form': form})
 
@@ -127,7 +127,7 @@ def get_base64_image(image_field):
     with open(image_field.path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
     return f"data:image/png;base64,{encoded_string}"
-    
+
 def get_guessed_cars(request):
     guessed_cars = request.session.get('guessed_today', [])
     guessed_cars_details = []
