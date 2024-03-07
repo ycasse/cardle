@@ -1,0 +1,185 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-04 18:29+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: cardle/settings.py:122
+msgid "English"
+msgstr ""
+
+#: cardle/settings.py:123
+msgid "French"
+msgstr "Français"
+
+msgid "Guess today's car !"
+msgstr "Devine la voiture du jour !"
+
+msgid "Search for a car model"
+msgstr "Rechercher un modèle"
+
+msgid "Guess"
+msgstr "Valider"
+
+msgid "Next car in:"
+msgstr "Prochaine voiture dans :"
+
+msgid "Rear-wheel drive"
+msgstr "Propulsion"
+
+msgid "Front-wheel drive"
+msgstr "Traction"
+
+msgid "4-wheel drive"
+msgstr "Intégrale"
+
+msgid "Gasoline"
+msgstr "Essence"
+
+msgid "Diesel"
+msgstr "Diesel"
+
+msgid "Hybrid"
+msgstr "Hybride"
+
+msgid "Electric"
+msgstr "Electrique"
+
+msgid "LPG"
+msgstr "GPL"
+
+msgid "NVG"
+msgstr "GNV"
+
+msgid "Bio-ethanol"
+msgstr "Bio-éthanol"
+
+msgid "City car"
+msgstr "Citadine"
+
+msgid "Cabriolet"
+msgstr "Cabriolet"
+
+msgid "Sedan"
+msgstr "Berline"
+
+msgid "Station wagon"
+msgstr "Break"
+
+msgid "Supercar"
+msgstr "Supercar"
+
+msgid "Hypercar"
+msgstr "Hypercar"
+
+msgid "Coupé"
+msgstr "Coupé"
+
+msgid "Sports car"
+msgstr "Voiture de sport"
+
+msgid "GT"
+msgstr "GT"
+
+msgid "Compact car"
+msgstr "Compacte"
+
+msgid "Van"
+msgstr "Van"
+
+msgid "Roadster"
+msgstr "Roadster"
+
+msgid "SUV"
+msgstr "SUV"
+
+msgid "Pick-up"
+msgstr "Pick-up"
+
+msgid "Targa top"
+msgstr "Targa"
+
+msgid "Panel van"
+msgstr "Camionnette"
+
+msgid "Minivan"
+msgstr "Monospace"
+
+msgid "Single cylinder"
+msgstr "Monocylindre"
+
+msgid "Straight-2"
+msgstr "2-cyl. en ligne"
+
+msgid "Straight-3"
+msgstr "3-cyl. en ligne"
+
+msgid "Straight-4"
+msgstr "4-cyl. en ligne"
+
+msgid "Straight-5"
+msgstr "5-cyl. en ligne"
+
+msgid "Straight-6"
+msgstr "6-cyl. en ligne"
+
+msgid "Straight-8"
+msgstr "8-cyl. en ligne"
+
+msgid "V6"
+msgstr "V6"
+
+msgid "V8"
+msgstr "V8"
+
+msgid "V10"
+msgstr "V10"
+
+msgid "V12"
+msgstr "V12"
+
+msgid "V16"
+msgstr "V16"
+
+msgid "W8"
+msgstr "W8"
+
+msgid "W12"
+msgstr "W12"
+
+msgid "W16"
+msgstr "W16"
+
+msgid "Electric engine"
+msgstr "Moteur électrique"
+
+msgid "VR5"
+msgstr "VR5"
+
+msgid "VR6"
+msgstr "VR6"
+
+msgid "Flat-2"
+msgstr "2-cyl. à plat"
+
+msgid "Flat-4"
+msgstr "4-cyl. à plat"
+
+msgid "Flat-6"
+msgstr "6-cyl. à plat"
+
+msgid "Flat-12"
+msgstr "12-cyl. à plat"

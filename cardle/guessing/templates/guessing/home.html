@@ -1,42 +1,93 @@
-{% extends 'guessing/base.html' %}
-{% load static %}
+  {% extends 'guessing/base.html' %}
+  {% load static %}
 
-{% block content %}
-  
+  {% block content %}
+    
   <div class="main-container">
     <h1>Cardle</h1>
-    <div id="info-panel">
-      <div id="hint-container">
-        <p class="info-text">Guess today's car !</p>
-        <!-- <img src="media/icon/drapeau.png" class="hint-icon"> -->
+    
+
+    <div class="bootstrap-modal-container">
+    <button type="button" class="btn btn-primary" id="changeLanguageBtn">
+      Change Language
+    </button>
+    <div class="modal" id="languageModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Select Language</h5>
+            <button type="button" class="close" id="closeLanguageModal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <!-- Language selection options with a scroll bar -->
+            <form id="languageForm" method="post">
+              {% csrf_token %}
+              <select name="language" class="form-control" id="languageSelect">
+                {% for lang in available_languages %}
+                  <option value="{{ lang.code }}" {% if lang.code == request.session.language %}selected{% endif %}>
+                    {{ lang.name }}
+                  </option>
+                {% endfor %}
+              </select>
+              <button type="button" class="btn btn-primary mt-2" id="changeLanguageSubmit">Change Language</button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="search-container">
-      <form id="car-search-form" method="get" action="{% url 'home' %}" autocomplete="off" target="response">
-        {% csrf_token %}
-        <input type="text" name="car_model" id="car-model-input" autocomplete="off" placeholder="Search for a car model">
-        <button class="guess" type="submit">Guess</button>
-      </form>
-    <div class="suggestions-panel" id="pannel-suggestions"></div>
-    </div>
-    <div id="name-placement"></div>
-    <div id="selected-car-details" class="car-details"></div>
-    <div id="yesterday-car">
-    </div>
-    <div id="win-message" style="display:none;">
-      <p style="color :white">GG gamer !</p>
-      <img id="win-car-image" src="" alt="Winning Car Image" class="win-car-image">
-      <p id="win-message-text"></p>
-      <p id="win-message-nbguess"></p>
-      <p style="color : white"> Next car in :</p>
-      <div class="countdown-container">
-        <p id="countdown"></p>
-    </div>
-    </div>
-    <div style="min-height: 25%; width: 100%;"></div>
   </div>
-  
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="module" src="{% static 'utils.js' %}"></script>
 
-{% endblock %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Show modal when the button is clicked
+        document.getElementById('changeLanguageBtn').addEventListener('click', function () {
+          document.getElementById('languageModal').style.display = 'block';
+        });
+
+        // Close modal when close button is clicked
+        document.getElementById('closeLanguageModal').addEventListener('click', function () {
+          document.getElementById('languageModal').style.display = 'none';
+        });
+
+        // Reload the page when a new language is selected
+        document.getElementById('changeLanguageSubmit').addEventListener('click', function () {
+          var selectedLanguage = document.getElementById('languageSelect').value;
+          document.getElementById('languageForm').action = '{% url "set_language" %}?language=' + selectedLanguage;
+          document.getElementById('languageForm').submit();
+        });
+      });
+    </script>
+    
+      <p id="win-streak" style="color: white;"></p>
+      <div id="info-panel">
+        <div id="hint-container">
+          <p class="info-text">{{ guess_msg }}</p>
+          <!-- <img src="{% static 'media/icon/drapeau.png' %}" class="hint-icon"> -->
+        </div>
+      </div>
+      <div class="search-container">
+        <form id="car-search-form" method="get" action="{% url 'home' %}" autocomplete="off" target="response">
+          {% csrf_token %}
+          <input type="text" name="car_model" id="car-model-input" autocomplete="off" placeholder="{{ search }}">
+          <button class="guess" type="submit">{{ guess }}</button>
+        </form>
+        <div class="suggestions-panel" id="pannel-suggestions"></div>
+      </div>
+      <div id="name-placement"></div>
+      <div id="selected-car-details" class="car-details"></div>
+      <div id="yesterday-car" style="font-weight: bold; text-shadow: 2px 2px rgb(2, 3, 41);">
+      </div>
+      <div id="win-message" style="display:none;">
+        <p style="color: white">GG gamer!</p>
+        <img id="win-car-image" src="" alt="Winning Car Image" class="win-car-image">
+        <p id="win-message-text"></p>
+        <p id="win-message-nbguess"></p>
+        <p style="color: white">{{ next_car }}</p>
+        <div class="countdown-container">
+          <p id="countdown"></p>
+        </div>
+      </div>
+      <div style="min-height: 25%; width: 100%;"></div>
+    </div>
+    
+  {% endblock %}

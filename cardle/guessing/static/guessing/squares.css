@@ -1,0 +1,188 @@
+.guessing-car {
+    display: flex;
+    width: 760px;
+    flex-direction: row;  
+}
+.all-infos {
+    display: flex;
+    width: 760px;
+    flex-direction: row;
+    cursor:default;
+}
+
+.name-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 104px;
+    height: 40px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-size: 1.3em;
+    border-bottom: 5px solid rgb(255, 255, 255);
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px #333; 
+}
+
+.square-info-green {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 1.3em;
+    background-color: rgb(30, 191, 30);
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+}
+.square-info-green:hover {
+    background-color: rgb(142, 252, 142);
+    cursor:default;
+}
+
+.square-info-red {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 1.3em;
+    background-color: rgb(255, 100, 100);
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+}
+.square-info-red:hover {
+    background-color: rgb(169, 6, 6);
+    cursor:default;
+}
+
+.square-info-orange {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 1.3em;
+    background-color: rgb(247, 144, 59);
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+}
+.square-info-orange:hover {
+    background-color: rgb(253, 188, 134);
+    cursor:default;
+}
+
+.square-year-up {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 1.3em;
+    background-color: rgb(255, 100, 100);
+    background-image: url("../backgrounds/darkup.png");
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+    cursor:default;
+}
+
+.square-year-up:hover {
+    background-color: rgb(169, 6, 6);
+    background-image: url("../backgrounds/lightup.png");
+    cursor:default;
+}
+
+.square-year-down {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 102px;
+    height: 85px;
+    border: 1px solid white;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 1.3em;
+    background-color: rgb(255, 100, 100);
+    background-image: url("../backgrounds/darkdown.png");
+    color : white;
+    text-shadow: 2px 2px 2px  #333;
+    cursor:default;
+}
+
+.square-year-down:hover {
+    background-color: rgb(169, 6, 6);
+    background-image: url("../backgrounds/lightdown.png");
+    cursor:default;
+}
+
+.square-image {
+    display: block;
+    max-width: 100%; 
+    max-height: 100%;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+}
+
+.model {
+    position: relative; 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    max-width: 102px;
+    max-height: 85px;
+    height: auto;
+    width: 100%;
+    border: 1px solid white;
+    background-color: black;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.model:hover .car-name {
+    visibility: visible;
+    opacity: 1;
+    cursor:default;
+}
+
+.car-name {
+    position: absolute; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(31, 49, 65, 0.72);
+    color: #fff;
+    visibility: hidden;
+    opacity: 0;
+}
+.square-info-large-font {
+    font-size: 1.1em; /* Adjust the font size as needed */
+}

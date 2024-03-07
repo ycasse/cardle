@@ -5,8 +5,24 @@
 
         <script src="https://unpkg.com/htmx.org@1.2.1"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://unpkg.com/emojisplosion/lib/global.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
+        <script src="{% static 'globals.js' %}"></script>
+        <script src="{% static 'attributesComparaison.js' %}"></script>
+        <script src="{% static 'carDetails.js' %}"></script>
+        <script src="{% static 'countdown.js' %}"></script>
+        <script src="{% static 'winMessage.js' %}"></script>
+        <script src="{% static 'suggestions.js' %}"></script>
+        <script src="{% static 'winStreak.js' %}"></script>
+        <script src="{% static 'bootstrap.min.js' %}"></script>
+
         <link rel="stylesheet" href="{% static 'guessing/styles.css' %}">
+        <link rel="stylesheet" href="{% static 'guessing/guessing.css'%}">
+        <link rel="stylesheet" href="{% static 'guessing/squares.css'%}">
+        <link rel="stylesheet" href="{% static 'guessing/winPannel.css'%}">
+        <link rel="stylesheet" href="{% static 'guessing/fonts.css' %}">
+        <link rel="stylesheet" href="{% static 'guessing/bootstrap.min.css' %}">
+
        </head>
        <body>
             {% block content %}
