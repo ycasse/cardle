@@ -5,8 +5,6 @@
     
   <div class="main-container">
     <h1>Cardle</h1>
-    
-
     <div class="bootstrap-modal-container">
     <button type="button" class="btn btn-primary" id="changeLanguageBtn">
       Change Language
@@ -15,12 +13,11 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Select Language</h5>
+            <h5 class="modal-title">Pick your language</h5>
             <button type="button" class="close" id="closeLanguageModal">&times;</button>
           </div>
           <div class="modal-body">
-            <!-- Language selection options with a scroll bar -->
-            <form id="languageForm" method="post">
+            <form id="languageForm" method="post" data-url="{% url 'set_language' %}">
               {% csrf_token %}
               <select name="language" class="form-control" id="languageSelect">
                 {% for lang in available_languages %}
@@ -36,28 +33,6 @@
       </div>
     </div>
   </div>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        // Show modal when the button is clicked
-        document.getElementById('changeLanguageBtn').addEventListener('click', function () {
-          document.getElementById('languageModal').style.display = 'block';
-        });
-
-        // Close modal when close button is clicked
-        document.getElementById('closeLanguageModal').addEventListener('click', function () {
-          document.getElementById('languageModal').style.display = 'none';
-        });
-
-        // Reload the page when a new language is selected
-        document.getElementById('changeLanguageSubmit').addEventListener('click', function () {
-          var selectedLanguage = document.getElementById('languageSelect').value;
-          document.getElementById('languageForm').action = '{% url "set_language" %}?language=' + selectedLanguage;
-          document.getElementById('languageForm').submit();
-        });
-      });
-    </script>
-    
       <p id="win-streak" style="color: white;"></p>
       <div id="info-panel">
         <div id="hint-container">
