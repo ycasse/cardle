@@ -15,7 +15,7 @@ function compareCarAttribute(selectedAttribute, searchedAttribute, attributeName
             result = `<div class="square-info-red ${attributeName}" data-car-detail="${attributeName}">${searchedAttribute}</div>`;
         }
         const textLength = searchedAttribute.length;
-        if (textLength > 30) {
+        if (textLength > 20) {
             result = result.replace('class="', 'class="square-info-large-font ');
         }
 
