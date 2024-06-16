@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils import timezone
 
 class Brand(models.Model):
     name = models.CharField(max_length=100)
@@ -45,3 +46,23 @@ class Car(models.Model):
     def __str__(self):
         return self.model
 
+class GuessCount(models.Model):
+    count = models.IntegerField(default=0)
+    last_reset = models.DateTimeField(default=timezone.now)
+
+    @classmethod
+    def get_count(cls):
+        # Fetch the count from the database
+        return cls.objects.first().count
+
+    @classmethod
+    def increment_count(cls):
+        # Increment the count in the database
+        count_obj = cls.objects.first()
+        count_obj.count += 1
+        count_obj.save()
+
+    @classmethod
+    def reset_count(cls):
+        # Reset the count to 0 at midnight
+        cls.objects.update(count=0, last_reset=timezone.now)

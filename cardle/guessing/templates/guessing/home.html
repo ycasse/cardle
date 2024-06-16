@@ -1,22 +1,20 @@
-  {% extends 'guessing/base.html' %}
-  {% load static %}
+{% extends 'guessing/base.html' %}
+{% load static %}
 
-  {% block content %}
-    
+{% block content %}
   <div class="main-container">
     <h1>Cardle</h1>
-    <div class="bootstrap-modal-container">
-    <button type="button" class="btn btn-primary" id="changeLanguageBtn">
-      Change Language
-    </button>
-    <div class="modal" id="languageModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Pick your language</h5>
-            <button type="button" class="close" id="closeLanguageModal">&times;</button>
+    <div class="popup-container">
+      <button type="button" class="btn btn-primary" id="changeLanguageBtn">
+        Change Language
+      </button>
+      <div class="popup" id="languagePopup">
+        <div class="popup-content">
+          <div class="popup-header">
+            <h5 class="popup-title">Pick your language</h5>
+            <button type="button" class="close" id="closeLanguagePopup">&times;</button>
           </div>
-          <div class="modal-body">
+          <div class="popup-body">
             <form id="languageForm" method="post" data-url="{% url 'set_language' %}">
               {% csrf_token %}
               <select name="language" class="form-control" id="languageSelect">
@@ -32,17 +30,16 @@
         </div>
       </div>
     </div>
-  </div>
-      <p id="win-streak" style="color: white;"></p>
-      <div id="info-panel">
-        <div id="hint-container">
-          <p class="info-text">{{ guess_msg }}</p>
-          <!-- <img src="{% static 'media/icon/drapeau.png' %}" class="hint-icon"> -->
-        </div>
+    <p id="win-streak" style="color: white;"></p>
+    <div id="info-panel">
+      <div id="hint-container">
+        <p class="info-text">{{ guess_msg }}</p>
       </div>
-      <div class="search-container">
-        <form id="car-search-form" method="get" action="{% url 'home' %}" autocomplete="off" target="response">
-          {% csrf_token %}
+    </div>
+    <div id="live-count"></div>
+    <div class="search-container">
+      <form id="car-search-form" method="get" action="{% url 'home' %}" autocomplete="off" target="response">
+        {% csrf_token %}
           <input type="text" name="car_model" id="car-model-input" autocomplete="off" placeholder="{{ search }}">
           <button class="guess" type="submit">{{ guess }}</button>
         </form>
@@ -50,12 +47,13 @@
       </div>
       <div id="name-placement"></div>
       <div id="selected-car-details" class="car-details"></div>
-      <div id="yesterday-car" style="font-weight: bold; text-shadow: 2px 2px rgb(2, 3, 41);">
-      </div>
+      <div id="yesterday-car" style="font-weight: bold; text-shadow: 2px 2px rgb(2, 3, 41);"></div>
+      
       <div id="win-message" style="display:none;">
         <p style="color: white">GG gamer!</p>
         <img id="win-car-image" src="" alt="Winning Car Image" class="win-car-image">
         <p id="win-message-text"></p>
+        <p id="win-count"></p>
         <p id="win-message-nbguess"></p>
         <p style="color: white">{{ next_car }}</p>
         <div class="countdown-container">

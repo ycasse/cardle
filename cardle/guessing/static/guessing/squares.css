@@ -8,6 +8,7 @@
     width: 760px;
     flex-direction: row;
     cursor:default;
+    margin-top : 4%;
 }
 
 .name-column {

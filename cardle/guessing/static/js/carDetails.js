@@ -19,6 +19,7 @@ var nb_guess = 0;
 $(document).ready(function() {
     getWinStreak();
     updateWinStreakUI();
+    updateLiveCount();
     
     function updateGuessedCarsOnLoad(guessedCars) {
         for (var i = 0; i < guessedCars.length; i++) {
@@ -49,7 +50,7 @@ $(document).ready(function() {
                 } else {
                     text += '<img src="/media/car_pics/no_image.jpg" alt="Default Car Image"  class="square-image">';
                 }
-                 text += compareCarAttribute(selectcarwheel, searchedcarwheel, 'DriveWheel');
+                text += compareCarAttribute(selectcarwheel, searchedcarwheel, 'DriveWheel');
                 text += compareCarAttribute(selectcarfuel, searchedcarfuel, 'Fuel');
                 text += compareCarAttribute(selectcartype, searchedcartype, 'CarType');
                 text += compareCarAttribute(selectcarengine, searchedcarengine, 'EngineConf');
@@ -67,32 +68,44 @@ $(document).ready(function() {
                 $('#selected-car-details').prepend(container);
                 nb_guess++;
                 if (searchedcarmodel === selectcarmodel){
-                    var winMessageDiv = $('#win-message');
-                    var winCarImage = $('#win-car-image');
-                    var winMessageText = $('#win-message-text');
-                    var winMessageGuess = $('#win-message-nbguess');
-                
-                    if (selectcarpicture) {
-                        winCarImage.attr('src', selectcarpicture);
-                    } else {
-                        winCarImage.attr('src', '/media/car_pics/no_image.jpg');
-                    }
-                    winMessageText.css('color', 'white'); 
-                    winMessageText.html('You guessed : <span style="color: #00bfff;">' + selectcarmodel + '</span>'); 
-                    winMessageGuess.css('color', 'white');
-                    winMessageGuess.html('Number of guesses : <span style="color: #00bfff;">' + nb_guess + '</span>'); 
-                    winCarImage.addClass('pulse-animation');                
-                    winMessageDiv.width($('#selected-car-details').width());
-            
-                    winMessageDiv.show();
-                    $('#car-search-form').hide();
-                    $('#pannel-suggestions').hide();
-                    document.getElementById('win-car-image').scrollIntoView({
-                        behavior: 'smooth',
+                    $.ajax({
+                        url: 'get_user_count',
+                        method: 'GET',
+                        success: function(data) {
+                            var winMessageDiv = $('#win-message');
+                            var winCarImage = $('#win-car-image');
+                            var winMessageText = $('#win-message-text');
+                            var winMessageGuess = $('#win-message-nbguess');
+                            var winCount = $('#win-count');
+                        
+                            if (selectcarpicture) {
+                                winCarImage.attr('src', selectcarpicture);
+                            } else {
+                                winCarImage.attr('src', '/media/car_pics/no_image.jpg');
+                            }
+                            winMessageText.css('color', 'white'); 
+                            winMessageText.html('You guessed : <span style="color: #00bfff;">' + selectcarmodel + '</span>'); 
+                            winCount.css('color', 'white'); 
+                            winCount.html('You are the <span style="color: #00bfff;">' + data.count + '</span> to find the car of the day'); 
+                            winMessageGuess.css('color', 'white');
+                            winMessageGuess.html('Number of guesses : <span style="color: #00bfff;">' + nb_guess + '</span>'); 
+                            winCarImage.addClass('pulse-animation');                
+                            winMessageDiv.width($('#selected-car-details').width());
+                    
+                            winMessageDiv.show();
+                            $('#car-search-form').hide();
+                            $('#pannel-suggestions').hide();
+                            document.getElementById('win-car-image').scrollIntoView({
+                                behavior: 'smooth',
+                            });
+                            setTimeout(function() {
+                                winCarImage.removeClass('pulse-animation');
+                            }, 2000);
+                        },
+                        error: function(error) {
+                            console.error('Error fetching live count:', error);
+                        }
                     });
-                    setTimeout(function() {
-                        winCarImage.removeClass('pulse-animation');
-                    }, 2000);
                 }
                 $('#car-model-input').val('');
                 $(".suggestions-panel").hide();
@@ -164,7 +177,6 @@ $(document).ready(function() {
                 searchedcarengine =  data.car_details['Engine conf'];
                 searchedcarwheel = data.car_details['Drive wheel'] ;
                 searchedcaryear = data.car_details.Year;
-                console.log(searchedcarwheel);
                 if (typeof searchedcarmodel !== 'undefined'){ 
                     if (nb_guess === 0){
                         $('#name-placement').prepend('<div class="all-infos">' +
@@ -214,6 +226,7 @@ $(document).ready(function() {
                     container.find('.Year').hide().delay((5 * fadeInDelay)).fadeIn(fadeInDuration);
                     nb_guess++;
                     if (searchedcarmodel === selectcarmodel){
+                        incrementCount();
                         winmessage(nb_guess);
                     }
                     $('#car-model-input').val('');

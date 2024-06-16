@@ -22,6 +22,9 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('get_car_details/', views.get_car_details, name='get_car_details'),
     path('set_language/', set_language, name='set_language'),
+    path('get_live_count/', views.get_live_count, name='get_live_count'),
+    path('increment_count/', views.increment_count, name='increment_count'),
+    path('get_user_count/', views.get_user_count, name='get_user_count'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

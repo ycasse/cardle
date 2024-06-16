@@ -46,8 +46,12 @@ INSTALLED_APPS = [
     'multiselectfield',
     'guessing',
     'dal',
-    'dal_select2'
-    
+    'dal_select2',
+    'django_cron',
+]
+
+CRON_CLASSES = [
+    'guessing.cron.ResetCountCronJob',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +126,7 @@ LOCALE_PATHS = [
 LANGUAGES = [
     ('en', _('English')),
     ('fr', _('French')),
+
 ]
 
 LANGUAGE_CODE = 'en-us'

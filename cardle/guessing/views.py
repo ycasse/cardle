@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
-from guessing.models import Car
+from guessing.models import Car, GuessCount
 from django.db.models import Q
 from datetime import timedelta
 from datetime import datetime
@@ -79,6 +79,7 @@ def home(request):
 
     if stored_date_str and stored_date_str != str(current_date):
         request.session['guessed_today'] = []
+        request.session['guess_count'] = 0
     request.session['today_date'] = str(current_date)
 
     activate(request.session.get('language'))
@@ -179,3 +180,34 @@ def set_language(request):
     if lang_code and lang_code in [code for code, _ in settings.LANGUAGES]:
         request.session['language'] = lang_code
     return redirect(request.META.get('guessing/home.html', '/'))
+
+def get_live_count(request):
+    guess_count = GuessCount.objects.first()
+    if guess_count is None:
+        guess_count = GuessCount.objects.create(count=0)
+    return JsonResponse({'count': guess_count.count})
+
+def ordinal(n):
+    suffix = ['th', 'st', 'nd', 'rd'] + ['th'] * 6
+    if 10 <= n % 100 <= 20:
+        return f"{n}th"
+    return f"{n}{suffix[n % 10]}"
+
+def get_user_count(request):
+    guesses = request.session.get('guess_count')
+    print(guesses)
+    return JsonResponse({'count': ordinal(guesses)})
+
+def increment_count(request):
+    if request.method == 'POST':
+        guess_count = GuessCount.objects.first()
+        if guess_count is None:
+            guess_count = GuessCount.objects.create(count=1)
+        else:
+            guess_count.count += 1
+            guess_count.save()
+        request.session['guess_count'] = guess_count.count
+        print(guess_count)
+        return JsonResponse({'success': True, 'count': guess_count.count})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method.'})
